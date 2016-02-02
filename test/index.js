@@ -129,7 +129,6 @@ test('should finish yielding on return', (t) => {
     }
   ])
 
-
   let it = composed('foo')
   let res = it.next()
   t.equal(res.value, 'fetch')
@@ -143,5 +142,4 @@ test('should finish yielding on return', (t) => {
   it.next().value.then(function (res) {
     t.equal(res, 'google')
   })
-
 })
