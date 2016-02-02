@@ -115,3 +115,33 @@ test('should yield values at arbitrary stack depths', (t) => {
   t.equal(it.next().value, 'narf')
   t.end()
 })
+
+test('should finish yielding on return', (t) => {
+  t.plan(5)
+  let composed = compose([
+    function * (action, next) {
+      if (action === 'fetch') return yield Promise.resolve('google')
+      return next()
+    },
+    function * (action, next) {
+      if (action === 'foo') return 'foo ' + (yield 'fetch')
+      return 'qux'
+    }
+  ])
+
+
+  let it = composed('foo')
+  let res = it.next()
+  t.equal(res.value, 'fetch')
+  t.equal(res.done, false)
+
+  res = it.next('google')
+  t.equal(res.value, 'foo google')
+  t.equal(res.done, true)
+
+  it = composed('fetch')
+  it.next().value.then(function (res) {
+    t.equal(res, 'google')
+  })
+
+})
