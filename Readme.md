@@ -1,5 +1,5 @@
 
-# koax-compose
+# compose
 
 [![Build status][travis-image]][travis-url]
 [![Git tag][git-image]][git-url]
@@ -10,12 +10,12 @@ Compose koax middleware.
 
 ## Installation
 
-    $ npm install koax-compose
+    $ npm install @koax/compose
 
 ## Usage
 
 ```js
-var compose = require('koax-compose')
+var compose = require('compose')
 
 var composed = compose([function * (action, next) {
   if (action === 'foo') return 'bar'
@@ -60,11 +60,11 @@ function * middleware (action, next, ctx) {
 
 MIT
 
-[travis-image]: https://img.shields.io/travis/joshrtay/koax-compose.svg?style=flat-square
-[travis-url]: https://travis-ci.org/joshrtay/koax-compose
-[git-image]: https://img.shields.io/github/tag/joshrtay/koax-compose.svg
-[git-url]: https://github.com/joshrtay/koax-compose
+[travis-image]: https://img.shields.io/travis/koaxjs/compose.svg?style=flat-square
+[travis-url]: https://travis-ci.org/koaxjs/compose
+[git-image]: https://img.shields.io/github/tag/koaxjs/compose.svg
+[git-url]: https://github.com/koaxjs/compose
 [standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat
 [standard-url]: https://github.com/feross/standard
-[npm-image]: https://img.shields.io/npm/v/koax-compose.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/koax-compose
+[npm-image]: https://img.shields.io/npm/v/@koax/compose.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@koax/compose

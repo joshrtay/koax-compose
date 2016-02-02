@@ -11,7 +11,7 @@ var isGeneratorObject = require('@f/is-generator-object')
 module.exports = compose
 
 /**
- * koax-compose
+ * compose
  */
 
 function compose (middleware) {

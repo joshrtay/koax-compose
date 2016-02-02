@@ -31,7 +31,7 @@ init:
 	@git init
 	@git add .
 	@git commit -am "FIRST"
-	@hub create joshrtay/koax-compose -d "Compose koax middleware."
+	@hub create koaxjs/compose -d "Compose koax middleware."
 	@travis enable
 	@git push -u origin master
 
