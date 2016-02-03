@@ -17,9 +17,9 @@ module.exports = compose
 
 function compose (middleware) {
   return function * (action, next, ctx) {
-    if (!isFunction(next)) {
+    if (!ctx && !isFunction(next)) {
       ctx = next
-      next = null
+      next = undefined
     }
     next = next || identity
 
