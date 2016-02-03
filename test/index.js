@@ -27,6 +27,22 @@ test('should work with one (generator)', (t) => {
   t.end()
 })
 
+test.only('should have access to context', (t) => {
+  let composed = compose([
+    function * (action, next, ctx) {
+      if (action === 'foo') return 'bar' + this.fetched
+      else return next()
+    }
+  ])
+
+  let it = composed.call({fetched: 'google'}, 'foo')
+  t.equal(it.next().value, 'bargoogle')
+
+  it = composed('qux')
+  t.equal(it.next().value, 'qux')
+  t.end()
+})
+
 test('should work with two (mixed)', (t) => {
   let composed = compose([
     function (action, next) {
