@@ -13,7 +13,7 @@ var compose = require('../src')
 
 test('should work with one (generator)', (t) => {
   let composed = compose([
-    function * (action, next, ctx) {
+    function * (action, next) {
       if (action === 'foo') return 'bar'
       else return next()
     }
@@ -29,7 +29,7 @@ test('should work with one (generator)', (t) => {
 
 test.only('should have access to context', (t) => {
   let composed = compose([
-    function * (action, next, ctx) {
+    function * (action, next) {
       if (action === 'foo') return 'bar' + this.fetched
       else return next()
     }
