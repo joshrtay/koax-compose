@@ -47,11 +47,10 @@ composed('dup')() // => 'woot', 'narf', 'dup' (done)
  * The middleware signature
  * @param  {Mixed}   action an immutable action that middleware can process
  * @param  {Function} next  pass execution to next middleware (can yield or return)
- * @param  {Object}   ctx   mutable context (be careful)
  * @return {Mixed} whatever your heart desires
  */
 
-function * middleware (action, next, ctx) {
+function * middleware (action, next) {
 
 }
 ```

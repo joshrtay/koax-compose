@@ -15,11 +15,12 @@ module.exports = compose
  */
 
 function compose (middleware) {
-  return function * (action, next, ctx) {
+  return function * (action, next) {
     next = next || identity
-    ctx = ctx || {}
+
     let idx = -1
     let res = dispatch(0)
+    let ctx = this
 
     if (isGeneratorObject(res)) {
       return yield * flatten(res, true)()
@@ -33,9 +34,9 @@ function compose (middleware) {
       const fn = middleware[i] || next
       if (!fn) return
       else {
-        return fn(action, function () {
+        return fn.call(ctx, action, function () {
           return dispatch(i + 1)
-        }, ctx)
+        })
       }
     }
   }
