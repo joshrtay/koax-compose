@@ -34,7 +34,6 @@ function compose (middleware) {
       const fn = middleware[i] || next
       if (!fn) return
       else {
-        console.log('ctx2', ctx)
         return fn.call(ctx, action, function () {
           return dispatch(i + 1)
         })
