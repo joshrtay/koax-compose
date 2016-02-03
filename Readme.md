@@ -45,12 +45,13 @@ composed('dup')() // => 'woot', 'narf', 'dup' (done)
 ```js
 /**
  * The middleware signature
- * @param  {Mixed}   action an immutable action that middleware can process
- * @param  {Function} next  pass execution to next middleware (can yield or return)
- * @return {Mixed} whatever your heart desires
+ * @param {Mixed} action   an immutable action that middleware can process
+ * @param {Function} next  pass execution to next middleware (can yield or return)
+ * @param {Object} ctx     the global context
+ * @return {Mixed}         whatever your heart desires
  */
 
-function * middleware (action, next) {
+function * middleware (action, next, ctx) {
 
 }
 ```
