@@ -6,6 +6,8 @@
 
 var test = require('tape')
 var compose = require('../src')
+var flatten = require('@f/flatten-gen')
+var isGeneratorObject = require('@f/is-generator-object')
 
 /**
  * Tests
@@ -56,13 +58,13 @@ test('should work with two (mixed)', (t) => {
     }
   ])
 
-  let it = composed('foo')
-  t.equal(it.next().value, 'bar')
+  let dispatch = composed
+  t.equal(dispatch('foo'), 'bar')
 
-  it = composed('qux')
+  let it = dispatch('qux')
   t.equal(it.next().value, 'bat')
 
-  it = composed('narf')
+  it = dispatch('narf')
   t.equal(it.next().value, 'narf')
   t.end()
 })
@@ -85,13 +87,14 @@ test('should work with three (generators)', (t) => {
     }
   ])
 
-  let it = composed('foo')
+  let dispatch = composed
+  let it = dispatch('foo')
   t.equal(it.next().value, 'bar')
 
-  it = composed('qux')
+  it = dispatch('qux')
   t.equal(it.next().value, 'bat')
 
-  it = composed('narf')
+  it = dispatch('narf')
   t.equal(it.next().value, 'narf')
   t.end()
 })
@@ -115,21 +118,68 @@ test('should yield values at arbitrary stack depths', (t) => {
     }
   ])
 
-  let it = composed('foo')
+  let dispatch = composed
+  let it = dispatch('foo')
   t.equal(it.next().value, 'passed woot')
   t.equal(it.next().value, 'bar')
 
-  it = composed('qux')
+  it = dispatch('qux')
   t.equal(it.next().value, 'passed woot')
   t.equal(it.next().value, 'passed foo')
   t.equal(it.next().value, 'bat')
 
-  it = composed('narf')
+  it = dispatch('narf')
   t.equal(it.next().value, 'passed woot')
   t.equal(it.next().value, 'passed foo')
   t.equal(it.next().value, 'passed qux')
   t.equal(it.next().value, 'narf')
   t.end()
+})
+
+test('should return foo', (t) => {
+  let composed = compose([
+    function (action, next) {
+      return next()
+    },
+    function (action, next) {
+      return next()
+    },
+    function (action, next) {
+      return 'foo'
+    }
+  ])
+
+  t.equal(composed(), 'foo')
+  t.end()
+
+
+})
+
+test('should iterate right number of times', (t) => {
+  let composed = compose([
+    function * (action, next) {
+      return next()
+    },
+    function * (action, next) {
+      return next()
+    },
+    function * (action, next) {
+      return 'foo'
+    }
+  ])
+
+  let dispatch = composed
+  let it = dispatch()
+  let res = it.next()
+  t.equal(res.value, 'foo')
+  t.equal(res.done, false)
+
+  res = it.next()
+  t.equal(res.value, undefined)
+  t.equal(res.done, true)
+  t.end()
+
+
 })
 
 test('should finish yielding on return', (t) => {
@@ -145,7 +195,8 @@ test('should finish yielding on return', (t) => {
     }
   ])
 
-  let it = composed('foo')
+  let dispatch = composed
+  let it = dispatch('foo')
   let res = it.next()
   t.equal(res.value, 'fetch')
   t.equal(res.done, false)
@@ -154,7 +205,8 @@ test('should finish yielding on return', (t) => {
   t.equal(res.value, 'foo google')
   t.equal(res.done, true)
 
-  it = composed('fetch')
+
+  it = dispatch('fetch')
   it.next().value.then(function (res) {
     t.equal(res, 'google')
   })
