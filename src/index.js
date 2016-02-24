@@ -4,6 +4,7 @@ var identity = require('@f/identity')
 var isGeneratorObject = require('@f/is-generator-object')
 var isFunction = require('@f/is-function')
 var toGenerator = require('@f/to-generator')
+var throws = require('@f/throws')
 
 /**
  * Exports
@@ -59,6 +60,7 @@ function toGen (value) {
 function valGen(value) {
   return toGenerator(function () {
     this.next = () => ({value, done: true})
+    this.throw = throws
   })()
 }
 
