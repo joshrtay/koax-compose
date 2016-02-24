@@ -2,7 +2,7 @@
   "name": "@koax/compose",
   "description": "Compose koax middleware.",
   "repository": "git://github.com/koaxjs/compose.git",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
