@@ -8,6 +8,7 @@ var test = require('tape')
 var compose = require('../src')
 var flatten = require('@f/flatten-gen')
 var isGeneratorObject = require('@f/is-generator-object')
+var composeFns = require('@f/compose')
 
 /**
  * Tests
@@ -59,9 +60,11 @@ test('should work with two (mixed)', (t) => {
   ])
 
   let dispatch = composed
-  t.equal(dispatch('foo'), 'bar')
+  let it = dispatch('foo')
+  let res = it.next()
+  t.equal(res.value, 'bar')
 
-  let it = dispatch('qux')
+  it = dispatch('qux')
   t.equal(it.next().value, 'bat')
 
   it = dispatch('narf')
@@ -149,7 +152,9 @@ test('should return foo', (t) => {
     }
   ])
 
-  t.equal(composed(), 'foo')
+  let it = composed()
+  let res = it.next()
+  t.equal(res.value, 'foo')
   t.end()
 
 

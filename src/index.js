@@ -1,7 +1,6 @@
 'use strict'
 
 var identity = require('@f/identity')
-var flatten = require('@f/flatten-gen')
 var isGeneratorObject = require('@f/is-generator-object')
 var isFunction = require('@f/is-function')
 var toGenerator = require('@f/to-generator')
@@ -13,7 +12,9 @@ var toGenerator = require('@f/to-generator')
 module.exports = compose
 
 /**
- * compose
+ * Compose koax middleware
+ * @param {Array} middleware
+ * @return {Function} koax middleware
  */
 
 function compose (middleware) {
@@ -25,7 +26,7 @@ function compose (middleware) {
     next = next || identity
 
     let idx = -1
-    return dispatch(0)
+    return toGen(dispatch(0))
 
     function dispatch (i) {
       if (i <= idx) throw new Error('next() called multiple times')
@@ -39,6 +40,26 @@ function compose (middleware) {
       }
     }
   }
+}
+
+/**
+ * Convert to a generator object
+ * @param {Mixed} value
+ * @return {GeneratObject}
+ */
+
+function toGen (value) {
+  if (!isGeneratorObject(value)) {
+    return valGen(value)
+  } else {
+    return value
+  }
+}
+
+function valGen(value) {
+  return toGenerator(function () {
+    this.next = () => ({value, done: true})
+  })()
 }
 
 /**
